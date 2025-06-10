@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proyecto Next.js
 
-## Getting Started
+Este es un proyecto de [Next.js](https://nextjs.org) creado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-First, run the development server:
+---
+
+## 🚀 Comenzando
+
+Primero, instalar dependencias:
+
+```bash
+npm i
+```
+
+Segundo, ejecuta el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tercero, ponte vio:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+🖕
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
-## Learn More
+Puedes comenzar a editar la página modificando `app/page.tsx`. La página se actualiza automáticamente a medida que editas el archivo.
 
-To learn more about Next.js, take a look at the following resources:
+Este proyecto usa [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para optimizar y cargar automáticamente [Geist](https://vercel.com/font), una nueva familia tipográfica creada por Vercel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📚 Aprende Más
 
-## Deploy on Vercel
+Para aprender más sobre Next.js, consulta los siguientes recursos:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 📘 [Documentación de Next.js](https://nextjs.org/docs) – Aprende sobre las funcionalidades y la API de Next.js.
+- 🎓 [Aprende Next.js](https://nextjs.org/learn) – Un tutorial interactivo para comenzar a usar Next.js.
+- 💻 [Repositorio oficial de Next.js en GitHub](https://github.com/vercel/next.js) – Tus comentarios y contribuciones son bienvenidos.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## ☁️ Despliegue en Vercel
+
+La forma más sencilla de desplegar tu aplicación de Next.js es utilizando la [plataforma Vercel](https://vercel.com), creada por los mismos desarrolladores de Next.js.
+
+Consulta la [documentación oficial de despliegue](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
