@@ -75,6 +75,7 @@ export interface Supplier {
   phone: string;
   city: string;
   country: string;
+  address: string;
   category: string;
   productsCount: number;
   rating: number;

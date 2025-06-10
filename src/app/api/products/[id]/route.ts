@@ -4,11 +4,11 @@ const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/products`;
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization") || "";
-    const { id } = params;
+    const { id } = await params;
 
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
