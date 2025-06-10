@@ -1,103 +1,142 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+import { Package, Users, AlertTriangle, DollarSign } from "lucide-react";
+import { StatsCards } from "@/components/dashboard/stats-cards";
+import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { LowStockAlert } from "@/components/dashboard/low-stock-alert";
+import { PageHeader } from "@/components/shared/page-header";
+import { useProducts } from "@/hooks/useProducts";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import type { DashboardStats, Activity, LowStockProduct } from "@/types";
+
+export default function Dashboard() {
+  const { products, isLoading, error } = useProducts();
+
+  // Calculate real stats from API data
+  const totalProducts = products.length;
+  const totalValue = products.reduce(
+    (sum, product) => sum + product.price * (product.inventory?.quantity || 0),
+    0
+  );
+  const lowStockCount = products.filter(
+    (product) =>
+      product.inventory &&
+      product.inventory.quantity <= product.inventory.minStock
+  ).length;
+
+  const stats: DashboardStats[] = [
+    {
+      title: "Total Productos",
+      value: totalProducts.toString(),
+      change: "+12%",
+      changeType: "positive",
+      icon: Package,
+      color: "bg-pink-500",
+    },
+    {
+      title: "Categorías Activas",
+      value: "8",
+      change: "+2",
+      changeType: "positive",
+      icon: Users,
+      color: "bg-pink-600",
+    },
+    {
+      title: "Valor Total Stock",
+      value: `$${totalValue.toLocaleString()}`,
+      change: "+8.2%",
+      changeType: "positive",
+      icon: DollarSign,
+      color: "bg-pink-400",
+    },
+    {
+      title: "Productos Bajo Stock",
+      value: lowStockCount.toString(),
+      change: "-5",
+      changeType: "negative",
+      icon: AlertTriangle,
+      color: "bg-pink-700",
+    },
+  ];
+
+  const recentActivity: Activity[] = [
+    {
+      action: "Producto agregado",
+      item: "Nuevo producto desde API",
+      time: "Hace 2 horas",
+      type: "add",
+    },
+    {
+      action: "Stock actualizado",
+      item: "Inventario sincronizado",
+      time: "Hace 4 horas",
+      type: "update",
+    },
+    {
+      action: "Categoría creada",
+      item: "Nueva categoría",
+      time: "Hace 1 día",
+      type: "add",
+    },
+    {
+      action: "Producto eliminado",
+      item: "Producto descontinuado",
+      time: "Hace 2 días",
+      type: "delete",
+    },
+  ];
+
+  const lowStockProducts: LowStockProduct[] = products
+    .filter(
+      (product) =>
+        product.inventory &&
+        product.inventory.quantity <= product.inventory.minStock
+    )
+    .slice(0, 4)
+    .map((product) => ({
+      name: product.name,
+      stock: product.inventory?.quantity || 0,
+      minStock: product.inventory?.minStock || 0,
+      location: product.inventory?.location || "N/A",
+    }));
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Dashboard"
+          description="Resumen general de tu inventario"
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-pink-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-gray-600">Cargando datos del dashboard...</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Dashboard"
+        description="Resumen general de tu inventario"
+      />
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <StatsCards stats={stats} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RecentActivity activities={recentActivity} />
+        <LowStockAlert products={lowStockProducts} />
+      </div>
     </div>
   );
 }
