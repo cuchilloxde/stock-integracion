@@ -46,10 +46,12 @@ class ApiClient {
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return response.json();
+      const contentType = response.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        const text = await response.text();
+        return text ? JSON.parse(text) : {} as T;
       }
+
       return {} as T;
     } catch (error) {
       console.warn("API Request failed:", error);

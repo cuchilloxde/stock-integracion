@@ -2,6 +2,15 @@ import { NextResponse } from "next/server";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/product-category`;
 
+async function safeParseJSON(response: Response) {
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+  }
+  return null;
+}
+
 export async function GET(request: Request) {
   try {
     const token = request.headers.get("authorization") || "";
@@ -13,8 +22,8 @@ export async function GET(request: Request) {
       },
     });
 
-    const data = await response.json();
-    return NextResponse.json(data, { status: response.status });
+    const data = await safeParseJSON(response);
+    return NextResponse.json(data ?? [], { status: response.status });
   } catch (error) {
     console.error("❌ Error en GET /api/product-category:", error);
     return NextResponse.json(
@@ -38,8 +47,8 @@ export async function POST(request: Request) {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
-    return NextResponse.json(data, { status: response.status });
+    const data = await safeParseJSON(response);
+    return NextResponse.json(data ?? {}, { status: response.status });
   } catch (error) {
     console.error("❌ Error en POST /api/product-category:", error);
     return NextResponse.json(
