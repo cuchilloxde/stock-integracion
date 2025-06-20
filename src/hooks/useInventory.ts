@@ -38,7 +38,7 @@ export function useInventory() {
       return newInventory;
     } catch (err) {
       console.error("Error creating inventory:", err);
-      throw new Error("Error al crear el registro de inventario");
+      throw new Error("Error al crear el registro de inventario.");
     }
   };
 
